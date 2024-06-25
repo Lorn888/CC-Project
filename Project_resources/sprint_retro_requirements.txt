@@ -1,0 +1,14 @@
+
+Intro/Team Slide (Who in Team, Scrum Master, The Project) - Sprint 1 
+
+Team Working Slide – Communication, assigning tickets, reviews and meetings, use of GIT.
+
+Sprint Progress Slide – What is done, what for next release (Trello, GIT, ReadMe) 
+(Infrastructure, Ways of Working, POC's, Extract, Load, Transform, Normalise, Store)
+
+Demo Slide - Code you're proud of – So Demo it. (This is a demo) 
+How You got on Slide (As a Team) 
+
+What you found difficult - How you got around it 
+
+What you need to work further on (Tasks, Research, Skills) 
