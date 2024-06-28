@@ -7,17 +7,19 @@ services:
     environment:
       POSTGRES_USER: "${postgres_user}"
       POSTGRES_PASSWORD: "${postgres_pass}"
+      POSTGRES_DB: coffee_cartel_db
     ports:
-      - "${postgres_host}"
+      - "${postgres_port}:5432"
     volumes:
-      - type: volume
-        source: my_db_files
-        target: /var/lib/postgres
+      - my_db_files:/var/lib/postgresql/data
+
   adminer:
     image: adminer
     container_name: adminer_coffee_container
     restart: always
     ports: 
-     - "${adminer_port}"
+      - "${adminer_port}:8080"
+
 volumes:
   my_db_files:
+    driver: local
