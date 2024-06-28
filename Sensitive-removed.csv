@@ -1,102 +1,51 @@
 Time Stamp,Location,Item(s),Total Amount,Payment Method
-
-09/05/2023 09:00,Leeds,"Regular Iced americano - 2.15, Large Hot Chocolate - 1.70, Regular Iced americano - 2.15, Large Filter coffee - 1.80",7.8,CARD
-
-09/05/2023 09:01,Leeds,"Large Chai latte - 2.60, Regular Hot Chocolate - 1.40",4.0,CASH
-
-09/05/2023 09:03,Leeds,"Regular Chai latte - 2.30, Regular Filter coffee - 1.50, Large Chai latte - 2.60",6.4,CARD
-
-09/05/2023 09:04,Leeds,"Regular Iced americano - 2.15, Regular Hot Chocolate - 1.40",3.55,CARD
-
-09/05/2023 09:06,Leeds,"Large Speciality Tea - English breakfast - 1.60, Regular Filter coffee - 1.50, Regular Speciality Tea - English breakfast - 1.30",4.4,CASH
-
-09/05/2023 09:08,Leeds,"Regular Speciality Tea - English breakfast - 1.30, Large Chai latte - 2.60, Large Hot Chocolate - 1.70, Regular Speciality Tea - English breakfast - 1.30",6.9,CARD
-
-09/05/2023 09:09,Leeds,"Regular Chai latte - 2.30, Regular Filter coffee - 1.50, Large Hot Chocolate - 1.70",5.5,CARD
-
-09/05/2023 09:11,Leeds,"Regular Chai latte - 2.30, Large Filter coffee - 1.80, Large Filter coffee - 1.80",5.9,CASH
-
-09/05/2023 09:12,Leeds,"Regular Filter coffee - 1.50, Regular Hot Chocolate - 1.40",2.9,CARD
-
-09/05/2023 09:14,Leeds,Regular Chai latte - 2.30,2.3,CARD
-
-09/05/2023 09:16,Leeds,"Large Filter coffee - 1.80, Regular Iced americano - 2.15, Large Speciality Tea - English breakfast - 1.60, Regular Chai latte - 2.30, Large Filter coffee - 1.80",9.65,CASH
-
-09/05/2023 09:17,Leeds,"Regular Filter coffee - 1.50, Large Filter coffee - 1.80, Regular Speciality Tea - English breakfast - 1.30, Large Hot Chocolate - 1.70",6.3,CASH
-
-09/05/2023 09:19,Leeds,"Regular Iced americano - 2.15, Large Chai latte - 2.60, Regular Hot Chocolate - 1.40, Large Filter coffee - 1.80, Regular Iced americano - 2.15",10.1,CARD
-
-09/05/2023 09:21,Leeds,"Large Speciality Tea - English breakfast - 1.60, Regular Chai latte - 2.30, Regular Chai latte - 2.30, Large Speciality Tea - English breakfast - 1.60, Large Chai latte - 2.60",10.4,CARD
-
-09/05/2023 09:22,Leeds,"Regular Chai latte - 2.30, Regular Hot Chocolate - 1.40, Regular Chai latte - 2.30, Large Filter coffee - 1.80",7.8,CARD
-
-09/05/2023 09:24,Leeds,"Regular Hot Chocolate - 1.40, Large Chai latte - 2.60",4.0,CARD
-
-09/05/2023 09:25,Leeds,"Regular Chai latte - 2.30, Regular Hot Chocolate - 1.40",3.7,CARD
-
-09/05/2023 09:27,Leeds,"Regular Iced americano - 2.15, Large Hot Chocolate - 1.70",3.85,CASH
-
-09/05/2023 09:29,Leeds,Large Iced americano - 2.50,2.5,CARD
-
-09/05/2023 09:30,Leeds,"Large Filter coffee - 1.80, Regular Speciality Tea - English breakfast - 1.30, Large Chai latte - 2.60",5.7,CASH
-
-09/05/2023 09:32,Leeds,Large Filter coffee - 1.80,1.8,CARD
-
-09/05/2023 09:33,Leeds,"Large Hot Chocolate - 1.70, Large Filter coffee - 1.80, Regular Hot Chocolate - 1.40, Large Chai latte - 2.60, Large Hot Chocolate - 1.70",9.2,CARD
-
-09/05/2023 09:35,Leeds,"Regular Filter coffee - 1.50, Large Hot Chocolate - 1.70, Large Filter coffee - 1.80, Regular Hot Chocolate - 1.40",6.4,CARD
-
-09/05/2023 09:37,Leeds,"Large Iced americano - 2.50, Large Speciality Tea - English breakfast - 1.60, Regular Filter coffee - 1.50, Regular Filter coffee - 1.50, Large Speciality Tea - English breakfast - 1.60",8.7,CASH
-
-09/05/2023 09:38,Leeds,"Large Chai latte - 2.60, Large Chai latte - 2.60, Regular Chai latte - 2.30, Regular Iced americano - 2.15, Large Filter coffee - 1.80",11.45,CARD
-
-09/05/2023 09:40,Leeds,Regular Speciality Tea - English breakfast - 1.30,1.3,CARD
-
-09/05/2023 09:42,Leeds,"Large Hot Chocolate - 1.70, Large Iced americano - 2.50",4.2,CARD
-
-09/05/2023 09:43,Leeds,"Regular Hot Chocolate - 1.40, Regular Hot Chocolate - 1.40",2.8,CASH
-
-09/05/2023 09:45,Leeds,"Large Speciality Tea - English breakfast - 1.60, Large Chai latte - 2.60, Regular Iced americano - 2.15",6.35,CASH
-
-09/05/2023 09:46,Leeds,"Large Chai latte - 2.60, Regular Iced americano - 2.15, Regular Speciality Tea - English breakfast - 1.30, Regular Chai latte - 2.30",8.35,CARD
-
-09/05/2023 09:48,Leeds,"Regular Speciality Tea - English breakfast - 1.30, Large Hot Chocolate - 1.70",3.0,CARD
-
-09/05/2023 09:50,Leeds,"Large Hot Chocolate - 1.70, Large Hot Chocolate - 1.70, Large Iced americano - 2.50, Large Iced americano - 2.50, Large Hot Chocolate - 1.70, Regular Iced americano - 2.15",12.25,CARD
-
-09/05/2023 09:51,Leeds,Regular Hot Chocolate - 1.40,1.4,CARD
-
-09/05/2023 09:53,Leeds,"Large Chai latte - 2.60, Large Hot Chocolate - 1.70, Large Iced americano - 2.50, Regular Speciality Tea - English breakfast - 1.30",8.1,CASH
-
-09/05/2023 09:54,Leeds,"Regular Iced americano - 2.15, Large Filter coffee - 1.80, Regular Iced americano - 2.15, Regular Filter coffee - 1.50",7.6,CARD
-
-09/05/2023 09:56,Leeds,Large Hot Chocolate - 1.70,1.7,CASH
-
-09/05/2023 09:58,Leeds,"Regular Iced americano - 2.15, Large Hot Chocolate - 1.70, Large Chai latte - 2.60, Regular Hot Chocolate - 1.40",7.85,CARD
-
-09/05/2023 09:59,Leeds,"Regular Speciality Tea - English breakfast - 1.30, Large Speciality Tea - English breakfast - 1.60",2.9,CARD
-
-09/05/2023 10:01,Leeds,"Regular Chai latte - 2.30, Regular Chai latte - 2.30, Large Filter coffee - 1.80",6.4,CARD
-
-09/05/2023 10:02,Leeds,"Large Hot Chocolate - 1.70, Large Chai latte - 2.60, Large Filter coffee - 1.80, Regular Speciality Tea - English breakfast - 1.30",7.4,CASH
-
-09/05/2023 10:03,Leeds,"Large Speciality Tea - English breakfast - 1.60, Regular Filter coffee - 1.50, Large Filter coffee - 1.80",4.9,CASH
-
-09/05/2023 10:04,Leeds,"Large Chai latte - 2.60, Large Hot Chocolate - 1.70",4.3,CASH
-
-09/05/2023 10:05,Leeds,"Large Filter coffee - 1.80, Large Speciality Tea - English breakfast - 1.60, Regular Filter coffee - 1.50",4.9,CARD
-
-09/05/2023 10:06,Leeds,"Large Chai latte - 2.60, Regular Hot Chocolate - 1.40, Large Speciality Tea - English breakfast - 1.60",5.6,CARD
-
-09/05/2023 10:07,Leeds,"Regular Iced americano - 2.15, Regular Filter coffee - 1.50, Large Speciality Tea - English breakfast - 1.60, Regular Filter coffee - 1.50",6.75,CASH
-
-09/05/2023 10:08,Leeds,"Regular Speciality Tea - English breakfast - 1.30, Regular Filter coffee - 1.50, Large Filter coffee - 1.80, Regular Hot Chocolate - 1.40, Regular Hot Chocolate - 1.40, Large Filter coffee - 1.80",9.2,CARD
-
-09/05/2023 10:09,Leeds,"Large Iced americano - 2.50, Regular Filter coffee - 1.50",4.0,CARD
-
-09/05/2023 10:11,Leeds,Regular Filter coffee - 1.50,1.5,CARD
-
-09/05/2023 10:12,Leeds,Regular Speciality Tea - English breakfast - 1.30,1.3,CARD
-
-09/05/2023 10:13,Leeds,"Large Filter coffee - 1.80, Regular Hot Chocolate - 1.40",3.2,CASH
-
+09/05/2023 09:00,Leeds,"Regular Iced americano - 2.15, Large Hot Chocolate - 1.7, Regular Iced americano - 2.15, Large Filter coffee - 1.8",7.8,CARD
+09/05/2023 09:01,Leeds,"Large Chai latte - 2.6, Regular Hot Chocolate - 1.4",4.0,CASH
+09/05/2023 09:03,Leeds,"Regular Chai latte - 2.3, Regular Filter coffee - 1.5, Large Chai latte - 2.6",6.4,CARD
+09/05/2023 09:04,Leeds,"Regular Iced americano - 2.15, Regular Hot Chocolate - 1.4",3.55,CARD
+09/05/2023 09:06,Leeds,"Large Speciality Tea - English breakfast - 1.6, Regular Filter coffee - 1.5, Regular Speciality Tea - English breakfast - 1.3",4.4,CASH
+09/05/2023 09:08,Leeds,"Regular Speciality Tea - English breakfast - 1.3, Large Chai latte - 2.6, Large Hot Chocolate - 1.7, Regular Speciality Tea - English breakfast - 1.3",6.9,CARD
+09/05/2023 09:09,Leeds,"Regular Chai latte - 2.3, Regular Filter coffee - 1.5, Large Hot Chocolate - 1.7",5.5,CARD
+09/05/2023 09:11,Leeds,"Regular Chai latte - 2.3, Large Filter coffee - 1.8, Large Filter coffee - 1.8",5.9,CASH
+09/05/2023 09:12,Leeds,"Regular Filter coffee - 1.5, Regular Hot Chocolate - 1.4",2.9,CARD
+09/05/2023 09:14,Leeds,Regular Chai latte - 2.3,2.3,CARD
+09/05/2023 09:16,Leeds,"Large Filter coffee - 1.8, Regular Iced americano - 2.15, Large Speciality Tea - English breakfast - 1.6, Regular Chai latte - 2.3, Large Filter coffee - 1.8",9.65,CASH
+09/05/2023 09:17,Leeds,"Regular Filter coffee - 1.5, Large Filter coffee - 1.8, Regular Speciality Tea - English breakfast - 1.3, Large Hot Chocolate - 1.7",6.3,CASH
+09/05/2023 09:19,Leeds,"Regular Iced americano - 2.15, Large Chai latte - 2.6, Regular Hot Chocolate - 1.4, Large Filter coffee - 1.8, Regular Iced americano - 2.15",10.1,CARD
+09/05/2023 09:21,Leeds,"Large Speciality Tea - English breakfast - 1.6, Regular Chai latte - 2.3, Regular Chai latte - 2.3, Large Speciality Tea - English breakfast - 1.6, Large Chai latte - 2.6",10.4,CARD
+09/05/2023 09:22,Leeds,"Regular Chai latte - 2.3, Regular Hot Chocolate - 1.4, Regular Chai latte - 2.3, Large Filter coffee - 1.8",7.8,CARD
+09/05/2023 09:24,Leeds,"Regular Hot Chocolate - 1.4, Large Chai latte - 2.6",4.0,CARD
+09/05/2023 09:25,Leeds,"Regular Chai latte - 2.3, Regular Hot Chocolate - 1.4",3.7,CARD
+09/05/2023 09:27,Leeds,"Regular Iced americano - 2.15, Large Hot Chocolate - 1.7",3.85,CASH
+09/05/2023 09:29,Leeds,Large Iced americano - 2.5,2.5,CARD
+09/05/2023 09:30,Leeds,"Large Filter coffee - 1.8, Regular Speciality Tea - English breakfast - 1.3, Large Chai latte - 2.6",5.7,CASH
+09/05/2023 09:32,Leeds,Large Filter coffee - 1.8,1.8,CARD
+09/05/2023 09:33,Leeds,"Large Hot Chocolate - 1.7, Large Filter coffee - 1.8, Regular Hot Chocolate - 1.4, Large Chai latte - 2.6, Large Hot Chocolate - 1.7",9.2,CARD
+09/05/2023 09:35,Leeds,"Regular Filter coffee - 1.5, Large Hot Chocolate - 1.7, Large Filter coffee - 1.8, Regular Hot Chocolate - 1.4",6.4,CARD
+09/05/2023 09:37,Leeds,"Large Iced americano - 2.5, Large Speciality Tea - English breakfast - 1.6, Regular Filter coffee - 1.5, Regular Filter coffee - 1.5, Large Speciality Tea - English breakfast - 1.6",8.7,CASH
+09/05/2023 09:38,Leeds,"Large Chai latte - 2.6, Large Chai latte - 2.6, Regular Chai latte - 2.3, Regular Iced americano - 2.15, Large Filter coffee - 1.8",11.45,CARD
+09/05/2023 09:40,Leeds,Regular Speciality Tea - English breakfast - 1.3,1.3,CARD
+09/05/2023 09:42,Leeds,"Large Hot Chocolate - 1.7, Large Iced americano - 2.5",4.2,CARD
+09/05/2023 09:43,Leeds,"Regular Hot Chocolate - 1.4, Regular Hot Chocolate - 1.4",2.8,CASH
+09/05/2023 09:45,Leeds,"Large Speciality Tea - English breakfast - 1.6, Large Chai latte - 2.6, Regular Iced americano - 2.15",6.35,CASH
+09/05/2023 09:46,Leeds,"Large Chai latte - 2.6, Regular Iced americano - 2.15, Regular Speciality Tea - English breakfast - 1.3, Regular Chai latte - 2.3",8.35,CARD
+09/05/2023 09:48,Leeds,"Regular Speciality Tea - English breakfast - 1.3, Large Hot Chocolate - 1.7",3.0,CARD
+09/05/2023 09:50,Leeds,"Large Hot Chocolate - 1.7, Large Hot Chocolate - 1.7, Large Iced americano - 2.5, Large Iced americano - 2.5, Large Hot Chocolate - 1.7, Regular Iced americano - 2.15",12.25,CARD
+09/05/2023 09:51,Leeds,Regular Hot Chocolate - 1.4,1.4,CARD
+09/05/2023 09:53,Leeds,"Large Chai latte - 2.6, Large Hot Chocolate - 1.7, Large Iced americano - 2.5, Regular Speciality Tea - English breakfast - 1.3",8.1,CASH
+09/05/2023 09:54,Leeds,"Regular Iced americano - 2.15, Large Filter coffee - 1.8, Regular Iced americano - 2.15, Regular Filter coffee - 1.5",7.6,CARD
+09/05/2023 09:56,Leeds,Large Hot Chocolate - 1.7,1.7,CASH
+09/05/2023 09:58,Leeds,"Regular Iced americano - 2.15, Large Hot Chocolate - 1.7, Large Chai latte - 2.6, Regular Hot Chocolate - 1.4",7.85,CARD
+09/05/2023 09:59,Leeds,"Regular Speciality Tea - English breakfast - 1.3, Large Speciality Tea - English breakfast - 1.6",2.9,CARD
+09/05/2023 10:01,Leeds,"Regular Chai latte - 2.3, Regular Chai latte - 2.3, Large Filter coffee - 1.8",6.4,CARD
+09/05/2023 10:02,Leeds,"Large Hot Chocolate - 1.7, Large Chai latte - 2.6, Large Filter coffee - 1.8, Regular Speciality Tea - English breakfast - 1.3",7.4,CASH
+09/05/2023 10:03,Leeds,"Large Speciality Tea - English breakfast - 1.6, Regular Filter coffee - 1.5, Large Filter coffee - 1.8",4.9,CASH
+09/05/2023 10:04,Leeds,"Large Chai latte - 2.6, Large Hot Chocolate - 1.7",4.3,CASH
+09/05/2023 10:05,Leeds,"Large Filter coffee - 1.8, Large Speciality Tea - English breakfast - 1.6, Regular Filter coffee - 1.5",4.9,CARD
+09/05/2023 10:06,Leeds,"Large Chai latte - 2.6, Regular Hot Chocolate - 1.4, Large Speciality Tea - English breakfast - 1.6",5.6,CARD
+09/05/2023 10:07,Leeds,"Regular Iced americano - 2.15, Regular Filter coffee - 1.5, Large Speciality Tea - English breakfast - 1.6, Regular Filter coffee - 1.5",6.75,CASH
+09/05/2023 10:08,Leeds,"Regular Speciality Tea - English breakfast - 1.3, Regular Filter coffee - 1.5, Large Filter coffee - 1.8, Regular Hot Chocolate - 1.4, Regular Hot Chocolate - 1.4, Large Filter coffee - 1.8",9.2,CARD
+09/05/2023 10:09,Leeds,"Large Iced americano - 2.5, Regular Filter coffee - 1.5",4.0,CARD
+09/05/2023 10:11,Leeds,Regular Filter coffee - 1.5,1.5,CARD
+09/05/2023 10:12,Leeds,Regular Speciality Tea - English breakfast - 1.3,1.3,CARD
+09/05/2023 10:13,Leeds,"Large Filter coffee - 1.8, Regular Hot Chocolate - 1.4",3.2,CASH

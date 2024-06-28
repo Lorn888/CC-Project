@@ -39,3 +39,31 @@ Our Product:  offers an intuitive, sustainable digital solution. It automaticall
 
 TRELLO --> https://trello.com/b/pNceXhOG/coffee-cartel
 
+Setup Instructions 
+git clone https://github.com/generation-de-nat1/Coffee-Cartel.git
+
+change to the directory of the repository
+
+docker compose up -d
+
+create virtual environment in the same directory
+
+python -m venv venv
+
+activate virtual environment venv\Scripts\activate
+
+create .env file with these parameters:
+postgres_host = localhost
+postgres_user = ######
+postgres_pass = ######
+postgres_port = ######
+adminer_port =  ######
+
+inside virtual environment
+pip install -r requirements.txt
+
+Use http://localhost:{adminer_port} to access adminer and use credentials chosen in .env file
+
+NOTE : select PostgreSQL for system on adminer
+
+Run the App
