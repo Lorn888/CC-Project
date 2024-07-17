@@ -1,43 +1,41 @@
 name: Deploy via CloudFormation
 
-# Trigger the workflow on push to the main branch
 on:
   push:
     branches:
       - main
-
-permissions:
-  id-token: write
-  contents: read
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Configure AWS credentials using OIDC
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          role-to-assume: arn:aws:iam::339713081862:role/github-cicd-role
-          aws-region: eu-west-1
-
-      # Step 3: Verify AWS Credentials
-      - name: Verify AWS Credentials
+      - name: Zip Lambda function
         run: |
-          aws sts get-caller-identity
+          cd my-lambda-function
+          zip -r lambda-package.zip .
 
-      # Step 4: Deploy the CloudFormation stack
+      - name: Create S3 Bucket
+        id: create_s3_bucket
+        run: |
+          aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
+
+      - name: Upload Lambda package to S3
+        run: |
+          aws s3 cp my-lambda-function/lambda-package.zip s3://cc-lambda-function-bucket/
+
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
             --template-file template.yaml \
             --stack-name my-stack \
             --parameter-overrides \
-              S3BucketName=coffee-cartel-bucket222222 \
+              S3BucketName=cc-lambda-function-bucket \
               SSMParameterName=coffee_cartel_redshift_settings \
             --capabilities CAPABILITY_NAMED_IAM
+
+      - name: Clean up Lambda package
+        run: rm -rf cc-lambda-function/lambda-package.zip
