@@ -12,6 +12,12 @@ Parameters:
     Default: 'coffee_cartel_redshift_settings'
     Description: Name of the SSM parameter that contains Redshift connection settings
 
+  S3Bucket:
+    Type: String
+    Default: 'lol123lol'
+    Description: Name of the S3 bucket that contains our awesome lambda
+
+    
 Resources:
   MyTriggerS3Bucket:
     Type: AWS::S3::Bucket
