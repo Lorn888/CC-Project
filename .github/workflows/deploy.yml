@@ -50,8 +50,9 @@ jobs:
         run: |
           aws cloudformation deploy \
             --template-file template.yaml \
-            --stack-name my-stack \
+            --stack-name patryk-is-stack-ed \
             --parameter-overrides \
+              S3Bucket=cc-lambda-function-bucket \ 
               S3BucketName=coffee-cartel-bucket222222 \
               SSMParameterName=coffee_cartel_redshift_settings \
             --capabilities CAPABILITY_NAMED_IAM
