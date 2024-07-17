@@ -31,6 +31,20 @@ jobs:
         run: |
           aws sts get-caller-identity
 
+      - name: Zip Lambda function
+        run: |
+          cd my-lambda-function
+          zip -r lambda-package.zip .
+      
+      - name: Create S3 Bucket
+        id: create_s3_bucket
+        run: |
+          aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
+
+      - name: Upload Lambda package to S3
+        run: |
+          aws s3 cp my-lambda-function/lambda-package.zip s3://cc-lambda-function-bucket/
+
       # Step 4: Deploy the CloudFormation stack
       - name: Deploy CloudFormation Stack
         run: |
