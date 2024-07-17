@@ -28,7 +28,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: eu-west-1
 
-      # Step 4: Deploy the CloudFormation stack
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
