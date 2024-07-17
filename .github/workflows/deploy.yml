@@ -1,0 +1,34 @@
+name: Deploy via CloudFormation
+
+# Trigger the workflow on push to the main branch
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Configure AWS credentials using the role ARN stored in GitHub Secrets
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: eu-west-1
+
+      # Step 3: Deploy the CloudFormation stack
+      - name: Deploy CloudFormation Stack
+        run: |
+          aws cloudformation deploy \
+            --template-file template.yaml \
+            --stack-name my-stack \
+            --parameter-overrides \
+              S3BucketName=coffee-cartel-bucket222222 \
+              SSMParameterName=coffee_cartel_redshift_settings \
+            --capabilities CAPABILITY_NAMED_IAM

@@ -1,4 +1,4 @@
-# Coffee-Cartel Elevators pitch
+# Coffee-Cartel
  <!-- -- .--..--..--..--..--..--..--..--..--..--..--..--..--. 
 / .. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \.. \
 \ \/\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ `'\ \/ /
@@ -67,3 +67,5 @@ Use http://localhost:{adminer_port} to access adminer and use credentials chosen
 NOTE : select PostgreSQL for system on adminer
 
 Run the App
+
+Compress-Archive -Path * -DestinationPath coffee-cartel-2_2.zip
