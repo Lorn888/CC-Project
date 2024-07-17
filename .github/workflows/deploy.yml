@@ -1,9 +1,14 @@
 name: Deploy via CloudFormation
 
+# Trigger the workflow on push to the main branch
 on:
   push:
     branches:
       - main
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   deploy:
@@ -12,21 +17,21 @@ jobs:
     steps:
       # Step 1: Check out the repository
       - name: Checkout code
-        uses: actions/checkout@v3 # Updated to the latest version
+        uses: actions/checkout@v3
 
-      # Step 2: Install AWS CLI
-      - name: Install AWS CLI
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y awscli
-
-      # Step 3: Configure AWS credentials using the role ARN stored in GitHub Secrets
+      # Step 2: Configure AWS credentials using OIDC
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3 # Updated to the latest version
+        uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: arn:aws:iam::339713081862:role/github-cicd-role
           aws-region: eu-west-1
 
+      # Step 3: Verify AWS Credentials
+      - name: Verify AWS Credentials
+        run: |
+          aws sts get-caller-identity
+
+      # Step 4: Deploy the CloudFormation stack
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
