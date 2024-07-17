@@ -1,6 +1,5 @@
 name: Deploy via CloudFormation
 
-# Trigger the workflow on push to the main branch
 on:
   push:
     branches:
