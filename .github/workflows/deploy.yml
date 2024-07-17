@@ -31,28 +31,35 @@ jobs:
         run: |
           aws sts get-caller-identity
 
+      # Step 4: Zip Lambda function
       - name: Zip Lambda function
         run: |
           cd my-lambda-function
           zip -r lambda-package.zip .
-      
-      - name: Create S3 Bucket
+
+      # Step 5: Create S3 Bucket if not exists
+      - name: Create S3 Bucket if not exists
         id: create_s3_bucket
         run: |
-          aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
+          if aws s3 ls "s3://cc-lambda-function-bucket" 2>&1 | grep -q 'NoSuchBucket'; then
+            aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
+          else
+            echo "Bucket already exists."
+          fi
 
+      # Step 6: Upload Lambda package to S3
       - name: Upload Lambda package to S3
         run: |
           aws s3 cp my-lambda-function/lambda-package.zip s3://cc-lambda-function-bucket/
 
-      # Step 4: Deploy the CloudFormation stack
+      # Step 7: Deploy the CloudFormation stack
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
             --template-file template.yaml \
             --stack-name patryk-is-stack-ed \
             --parameter-overrides \
-              S3Bucket=cc-lambda-function-bucket \ 
+              S3Bucket=cc-lambda-function-bucket \
               S3BucketName=coffee-cartel-bucket222222 \
               SSMParameterName=coffee_cartel_redshift_settings \
             --capabilities CAPABILITY_NAMED_IAM
