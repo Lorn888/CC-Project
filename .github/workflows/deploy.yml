@@ -50,7 +50,7 @@ jobs:
       # Step 6: Upload Lambda package to S3
       - name: Upload Lambda package to S3
         run: |
-          aws s3 cp my-lambda-function/lambda-package.zip s3://cc-lambda-function-bucket/
+          aws s3 cp my-lambda-function/coffee-cartel-2_2.zip s3://cc-lambda-function-bucket/
 
       # Step 7: Deploy the CloudFormation stack
       - name: Deploy CloudFormation Stack
