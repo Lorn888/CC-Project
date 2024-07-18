@@ -69,3 +69,4 @@ NOTE : select PostgreSQL for system on adminer
 Run the App
 
 Compress-Archive -Path * -DestinationPath coffee-cartel-2_2.zip
+
