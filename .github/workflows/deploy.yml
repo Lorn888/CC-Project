@@ -31,10 +31,10 @@ jobs:
         run: |
           find my-lambda-function/ -type f -exec chmod 644 {} \;
 
-      - name: Zip Lambda function using PowerShell
-        shell: pwsh
+      - name: Zip Lambda function using Unix commands
         run: |
-          Compress-Archive -Path ./my-lambda-function/* -DestinationPath coffee-cartel-2_2.zip
+          cd my-lambda-function
+          zip -r ../coffee-cartel-2_2.zip ./*
 
       - name: Create S3 Bucket if not exists
         id: create_s3_bucket
