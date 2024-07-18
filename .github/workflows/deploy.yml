@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
@@ -20,42 +20,42 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          role-to-assume: ${{secrets.AWS_ROLE_ARN}} 
           aws-region: eu-west-1
 
       - name: Verify AWS Credentials
         run: |
           aws sts get-caller-identity
+        shell: pwsh
 
-      - name: Set file permissions
+      - name: Zip Lambda function using PowerShell
         run: |
-          find my-lambda-function/ -type f -exec chmod 644 {} \;
-
-      - name: Zip Lambda function using Unix commands
-        run: |
-          cd my-lambda-function
-          zip -r ../coffee-cartel-2_2.zip ./*
+          Compress-Archive -Path .\my-lambda-function\* -DestinationPath coffee-cartel-2_2.zip
+        shell: pwsh
 
       - name: Create S3 Bucket if not exists
         id: create_s3_bucket
         run: |
-          if aws s3 ls "s3://cc-lambda-function-bucket" 2>&1 | grep -q 'NoSuchBucket'; then
+          if (!(aws s3 ls "s3://cc-lambda-function-bucket" 2>&1 | Select-String 'NoSuchBucket')) {
             aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
-          else
-            echo "Bucket already exists."
-          fi
+          } else {
+            Write-Output "Bucket already exists."
+          }
+        shell: pwsh
 
       - name: Upload Lambda package to S3
         run: |
           aws s3 cp coffee-cartel-2_2.zip s3://cc-lambda-function-bucket/
+        shell: pwsh
 
       - name: Deploy CloudFormation Stack
         run: |
-          aws cloudformation deploy \
-            --template-file template.yaml \
-            --stack-name my-stack \
-            --parameter-overrides \
-              S3Bucket=cc-lambda-function-bucket \
-              S3BucketName=coffee-cartel-drop-bucket \
-              SSMParameterName=coffee_cartel_redshift_settings \
+          aws cloudformation deploy `
+            --template-file template.yaml `
+            --stack-name my-stack `
+            --parameter-overrides `
+              S3Bucket=cc-lambda-function-bucket `
+              S3BucketName=coffee-cartel-drop-bucket `
+              SSMParameterName=coffee_cartel_redshift_settings `
             --capabilities CAPABILITY_NAMED_IAM
+        shell: pwsh
