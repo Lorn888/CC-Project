@@ -35,7 +35,7 @@ jobs:
       - name: Zip Lambda function
         run: |
           cd my-lambda-function
-          zip -r lambda-package.zip .
+          zip -r coffee-cartel-2_2.zip .
 
       # Step 5: Create S3 Bucket if not exists
       - name: Create S3 Bucket if not exists
