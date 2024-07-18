@@ -36,7 +36,8 @@ jobs:
       - name: Create S3 Bucket if not exists
         id: create_s3_bucket
         run: |
-          if (!(aws s3 ls "s3://cc-lambda-function-bucket" 2>&1 | Select-String 'NoSuchBucket')) {
+          $bucketExists = aws s3 ls "s3://cc-lambda-function-bucket" 2>&1 | Select-String 'NoSuchBucket'
+          if (-not $bucketExists) {
             aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
           } else {
             Write-Output "Bucket already exists."
