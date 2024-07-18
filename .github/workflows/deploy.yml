@@ -1,6 +1,5 @@
 name: Deploy via CloudFormation
 
-# Trigger the workflow on push to the main branch
 on:
   push:
     branches:
@@ -15,29 +14,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the repository
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Step 2: Configure AWS credentials using OIDC
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::339713081862:role/github-cicd-role
           aws-region: eu-west-1
 
-      # Step 3: Verify AWS Credentials
       - name: Verify AWS Credentials
         run: |
           aws sts get-caller-identity
 
-      # Step 4: Zip Lambda function
       - name: Zip Lambda function
         run: |
           cd my-lambda-function
           zip -r coffee-cartel-2_2.zip .
 
-      # Step 5: Create S3 Bucket if not exists
       - name: Create S3 Bucket if not exists
         id: create_s3_bucket
         run: |
@@ -47,12 +41,10 @@ jobs:
             echo "Bucket already exists."
           fi
 
-      # Step 6: Upload Lambda package to S3
       - name: Upload Lambda package to S3
         run: |
           aws s3 cp my-lambda-function/coffee-cartel-2_2.zip s3://cc-lambda-function-bucket/
 
-      # Step 7: Deploy the CloudFormation stack
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy \
