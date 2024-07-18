@@ -33,15 +33,9 @@ jobs:
           Compress-Archive -Path .\my-lambda-function\* -DestinationPath coffee-cartel-2_2.zip
         shell: pwsh
 
-      - name: Create S3 Bucket if not exists
-        id: create_s3_bucket
+      - name: Create S3 Bucket
         run: |
-          $bucketExists = aws s3 ls "s3://cc-lambda-function-bucket" 2>&1 | Select-String 'NoSuchBucket'
-          if (-not $bucketExists) {
-            aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
-          } else {
-            Write-Output "Bucket already exists."
-          }
+          aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
         shell: pwsh
 
       - name: Upload Lambda package to S3
