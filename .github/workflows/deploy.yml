@@ -52,6 +52,6 @@ jobs:
             --stack-name my-stack \
             --parameter-overrides \
               S3Bucket=cc-lambda-function-bucket \
-              S3BucketName=coffee-cartel-bucket222222 \
+              S3BucketName=coffee-cartel-drop-bucket \
               SSMParameterName=coffee_cartel_redshift_settings \
             --capabilities CAPABILITY_NAMED_IAM
