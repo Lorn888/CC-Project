@@ -30,7 +30,7 @@ jobs:
       - name: Zip Lambda function using PowerShell
         shell: pwsh
         run: |
-          Compress-Archive -Path ./my-lambda-function/*, ./my-lambda-function/.* -DestinationPath coffee-cartel-2_2.zip
+          Compress-Archive -Path ./my-lambda-function/* -DestinationPath coffee-cartel-2_2.zip
 
       - name: Create S3 Bucket if not exists
         id: create_s3_bucket
