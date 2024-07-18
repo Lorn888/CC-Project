@@ -17,34 +17,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          python -m venv venv
-          .\venv\Scripts\Activate.ps1
-          pip install -r requirements.txt
-        shell: pwsh
-
-      - name: Package Lambda function
-        run: |
-          .\venv\Scripts\Activate.ps1
-          pip install -t my-lambda-function -r requirements.txt
-          Compress-Archive -Path .\my-lambda-function\* -DestinationPath coffee-cartel-2_2.zip
-        shell: pwsh
-
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{secrets.AWS_ROLE_ARN}}
+          role-to-assume: ${{secrets.AWS_ROLE_ARN}} 
           aws-region: eu-west-1
 
       - name: Verify AWS Credentials
         run: |
           aws sts get-caller-identity
+        shell: pwsh
+
+      - name: Zip Lambda function using PowerShell
+        run: |
+          Compress-Archive -Path .\my-lambda-function\* -DestinationPath coffee-cartel-2_2.zip
         shell: pwsh
 
       - name: Create S3 Bucket
