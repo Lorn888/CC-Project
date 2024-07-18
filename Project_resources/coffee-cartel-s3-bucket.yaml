@@ -1,0 +1,171 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: coffee-cartel ETL pipeline setup
+Parameters:
+  TeamName:
+    Type: String
+    Description: Enter the team name you want to make resources for
+    Default: coffee-cartel-
+  NetworkStackName:
+    Type: String
+    Default: project-networking
+    Description: Network stack with VPC containing Redshift instance
+  LambdaS3Bucket:
+    Type: String
+    Description: The S3 bucket where Lambda function code is stored
+    Default: coffee-cartel-bucket
+  LambdaS3Key:
+    Type: String
+    Description: The S3 key for the Lambda function zip file
+    Default: lambda_function.zip
+  EC2InstanceKeyName:
+    Type: String
+    Description: Key pair associated with the EC2 instance
+  EC2InstanceSSHIngressIp:
+    Type: String
+    Description: Custom IP address for SSH ingress rule
+Resources:
+  EtlLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Sub '${TeamName}-etl-lambda'
+      Runtime: python3.11
+      Handler: lambda_function.lambda_handler
+      Role: !Sub 'arn:aws:iam::${AWS::AccountId}:role/nja-lambda-execution-role'
+      Timeout: 900
+      ReservedConcurrentExecutions: 10
+      Code:
+        S3Bucket: !Ref LambdaS3Bucket
+        S3Key: !Ref LambdaS3Key
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::ImportValue: !Sub '${NetworkStackName}-VPCSGID'
+        SubnetIds:
+          - Fn::ImportValue: !Sub '${NetworkStackName}-PrivateSubnet0ID'
+      Tags:
+        - Key: Name
+          Value: !Sub '${TeamName}-etl-lambda'
+      Environment:
+        Variables:
+          SSM_PARAMETER_NAME:
+            Fn::Join:
+            - '_'
+            - Fn::Split:
+              - '-'
+              - !Sub '${TeamName}_redshift_settings'
+  RawDataBucket:
+    Type: AWS::S3::Bucket
+    DependsOn:
+      - RawDataBucketPermission
+      - EtlLambdaFunction
+    Properties:
+      BucketName: !Sub '${TeamName}-raw-data'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:*
+            Function: !GetAtt EtlLambdaFunction.Arn
+      Tags:
+        - Key: Name
+          Value: !Sub '${TeamName}-raw-data'
+  CleanedDataBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${TeamName}-cleaned-data'
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: True
+        BlockPublicPolicy: True
+        IgnorePublicAcls: True
+        RestrictPublicBuckets: True
+      Tags:
+        - Key: Name
+          Value: !Sub '${TeamName}-cleaned-data'
+ 
+  RawDataBucketPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref EtlLambdaFunction
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub 'arn:aws:s3:::${TeamName}-raw-data'
+  RawDataBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref RawDataBucket
+      PolicyDocument:
+        Statement:
+          - Sid: "AllowSSLRequestsOnly"
+            Action: "s3:*"
+            Principal: "*"
+            Effect: "Deny"
+            Resource:
+              - !Sub "arn:aws:s3:::${TeamName}-raw-data"
+              - !Sub "arn:aws:s3:::${TeamName}-raw-data/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+  EC2InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for EC2 instance running Grafana
+      VpcId: !ImportValue
+        !Sub "${NetworkStackName}-VPCID"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: !Ref EC2InstanceSSHIngressIp
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${TeamName}-ec2-sg"
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: !Ref EC2InstanceKeyName
+      ImageId: ami-0db188056a6ff81ae
+      SecurityGroupIds:
+        - !Ref EC2InstanceSecurityGroup
+      SubnetId: !ImportValue
+        !Sub "${NetworkStackName}-PublicSubnet0ID"
+      UserData:
+        Fn::Base64: |
+          Content-Type: multipart/mixed; boundary="//"
+          MIME-Version: 1.0
+          --//
+          Content-Type: text/cloud-config; charset="us-ascii"
+          MIME-Version: 1.0
+          Content-Transfer-Encoding: 7bit
+          Content-Disposition: attachment; filename="cloud-config.txt"
+          #cloud-config
+          cloud_final_modules:
+          - [scripts-user, always]
+          --//
+          Content-Type: text/x-shellscript; charset="us-ascii"
+          MIME-Version: 1.0
+          Content-Transfer-Encoding: 7bit
+          Content-Disposition: attachment; filename="userdata.txt"
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install docker -y
+          sudo service docker start
+          sudo usermod -a -G docker ec2-user
+          sudo chkconfig docker on
+          sudo mkdir -p /grafana-storage
+          sudo docker run -d -p 3000:3000 --rm --volume /grafana-storage:/var/lib/grafana grafana/grafana
+          --//--
+      BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 30
+            VolumeType: gp3
+      Tags:
+        - Key: Name
+          Value: !Sub "${TeamName}-ec2-instance"
