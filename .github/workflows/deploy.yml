@@ -30,7 +30,7 @@ jobs:
       - name: Zip Lambda function
         run: |
           cd my-lambda-function
-          zip -r coffee-cartel-2_2.zip * .[^.] .??*
+          zip -r coffee-cartel-2_2.zip ./* ./.*
 
       - name: Create S3 Bucket if not exists
         id: create_s3_bucket
