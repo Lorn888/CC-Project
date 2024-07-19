@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CloudFormation template to create Lambda function, S3 bucket, and connect to an existing Redshift cluster using SSM Parameter Store
+Description: CC CF
 
 Parameters:
   S3BucketName:
