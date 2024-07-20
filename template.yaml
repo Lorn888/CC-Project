@@ -79,6 +79,7 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref LoadLambdaFunction
       Principal: sqs.amazonaws.com
+      SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Ref SQSQueueArn
 
   SQSQueueTrigger:
