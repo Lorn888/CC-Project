@@ -28,24 +28,19 @@ jobs:
           aws sts get-caller-identity
         shell: pwsh
 
-      - name: Create S3 Bucket if Not Exists
-        run: |
-          $bucketExists = aws s3api head-bucket --bucket cc-lambda-function-bucket --region eu-west-1
-          if ($LASTEXITCODE -ne 0) {
-            aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
-          }
-        shell: pwsh
-
       - name: Zip Lambda function using PowerShell
         run: |
-          Compress-Archive -Path .\extract-transform-lambda\* -DestinationPath extract-transform-lambda.zip
-          Compress-Archive -Path .\load-lambda\* -DestinationPath load-lambda.zip
+          Compress-Archive -Path .\my-lambda-function\* -DestinationPath coffee-cartel-2_2.zip
+        shell: pwsh
+
+      - name: Create S3 Bucket
+        run: |
+          aws s3 mb s3://cc-lambda-function-bucket --region eu-west-1
         shell: pwsh
 
       - name: Upload Lambda package to S3
         run: |
-          aws s3 cp extract-transform-lambda.zip s3://cc-lambda-function-bucket/
-          aws s3 cp load-lambda.zip s3://cc-lambda-function-bucket/
+          aws s3 cp coffee-cartel-2_2.zip s3://cc-lambda-function-bucket/
         shell: pwsh
 
       - name: Deploy CloudFormation Stack
@@ -55,7 +50,7 @@ jobs:
             --stack-name my-stack `
             --parameter-overrides `
               S3Bucket=cc-lambda-function-bucket `
-              S3BucketName=coffee-cartel-bucket `
+              S3BucketName=coffee-cartel-drop-bucket `
               SSMParameterName=coffee_cartel_redshift_settings `
             --capabilities CAPABILITY_NAMED_IAM
         shell: pwsh

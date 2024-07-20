@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS transactions_details (
+    transaction_details_id INTEGER IDENTITY(1,1) PRIMARY KEY,
+    timestamp TIMESTAMP,
+    location VARCHAR(255),
+    total_amount DECIMAL(10, 2),
+    payment_method VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS items (
+    item_id INTEGER IDENTITY(1,1) PRIMARY KEY,
+    item_name VARCHAR(255),
+    item_price DECIMAL(10, 2)
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+    transaction_id INTEGER IDENTITY(1,1) PRIMARY KEY,
+    item_id INTEGER NOT NULL,
+    transaction_details_id INTEGER NOT NULL,
+    FOREIGN KEY (item_id) REFERENCES items (item_id),
+    FOREIGN KEY (transaction_details_id) REFERENCES transactions_details (transaction_details_id)
+);

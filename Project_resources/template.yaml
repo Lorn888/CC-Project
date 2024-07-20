@@ -1,0 +1,76 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CC CF
+
+Parameters:
+  S3BucketName:
+    Type: String
+    Default: 'coffee-cartel-bucket2311222'
+    Description: Name of the S3 bucket that triggers the Lambda function
+
+  SSMParameterName:
+    Type: String
+    Default: 'coffee_cartel_redshift_settings'
+    Description: Name of the SSM parameter that contains Redshift connection settings
+
+  S3Bucket:
+    Type: String
+    Default: 'lol123lol'
+    Description: Name of the S3 bucket that contains our awesome lambda
+
+    
+Resources:
+  MyTriggerS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref S3BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:Put
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: csv
+            Function: !GetAtt MyLambdaFunction.Arn
+
+  MyLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Role: arn:aws:iam::339713081862:role/lambda-execution-role 
+      Code:
+        S3Bucket: !Ref S3Bucket
+        S3Key: coffee-cartel-2_2.zip
+      Runtime: python3.11
+      Timeout: 900  
+      MemorySize: 128  
+      Environment:
+        Variables:
+          SSM_PARAMETER_NAME: !Ref SSMParameterName
+      VpcConfig:
+        SubnetIds:
+          - subnet-011e49d2c53653df9
+        SecurityGroupIds:
+          - sg-05347bb4c6b2f7d31
+      LoggingConfig:
+        LogFormat: "Text"
+        LogGroup: !Sub "/aws/lambda/${AWS::StackName}-${AWS::Region}-${AWS::StackName}-MyLambdaFunction"
+
+  LambdaPermissionForS3:
+    Type: AWS::Lambda::Permission
+    DependsOn: MyLambdaFunction
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref MyLambdaFunction
+      Principal: s3.amazonaws.com
+      SourceAccount: !Ref "AWS::AccountId"
+      SourceArn: !Sub arn:aws:s3:::${S3BucketName}
+
+Outputs:
+  LambdaFunctionArn:
+    Description: ARN of the Lambda function
+    Value: !GetAtt MyLambdaFunction.Arn
+
+  SSMParameterName:
+    Description: Name of the SSM parameter containing Redshift settings
+    Value: !Ref SSMParameterName

@@ -1,49 +1,57 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: CC CF
+Description: CloudFormation template for deploying Lambda functions and related resources.
 
 Parameters:
   S3BucketName:
     Type: String
-    Default: 'coffee-cartel-bucket2311222'
-    Description: Name of the S3 bucket that triggers the Lambda function
+    Default: 'coffee-cartel-bucket'
+    Description: Name of the existing S3 bucket that triggers the Lambda function
 
   SSMParameterName:
     Type: String
     Default: 'coffee_cartel_redshift_settings'
     Description: Name of the SSM parameter that contains Redshift connection settings
 
-  S3Bucket:
+  LambdaCodeBucket:
     Type: String
-    Default: 'lol123lol'
-    Description: Name of the S3 bucket that contains our awesome lambda
+    Default: 'cc-lambda-function-bucket'  # Bucket created by GitHub Actions
+    Description: Name of the S3 bucket that contains the Lambda code
 
-    
+  SQSQueueArn:
+    Type: String
+    Default: 'arn:aws:sqs:eu-west-1:339713081862:CC-Q'
+    Description: ARN of the existing SQS queue
+
 Resources:
-  MyTriggerS3Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: !Ref S3BucketName
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: s3:ObjectCreated:Put
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: csv
-            Function: !GetAtt MyLambdaFunction.Arn
-
-  MyLambdaFunction:
+  ExtractTransformLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
       Handler: lambda_function.lambda_handler
-      Role: arn:aws:iam::339713081862:role/lambda-execution-role 
+      Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
-        S3Bucket: !Ref S3Bucket
-        S3Key: coffee-cartel-2_2.zip
+        S3Bucket: !Ref LambdaCodeBucket
+        S3Key: extract-transform-lambda.zip  # Ensure this key exists in the bucket
       Runtime: python3.11
-      Timeout: 900  
-      MemorySize: 128  
+      Timeout: 900
+      MemorySize: 128
+      Environment:
+        Variables:
+          SQS_QUEUE_URL: https://sqs.eu-west-1.amazonaws.com/339713081862/CC-Q
+      LoggingConfig:
+        LogFormat: "Text"
+        LogGroup: !Sub "/aws/lambda/${AWS::StackName}-${AWS::Region}-${AWS::StackName}-ExtractTransformLambdaFunction"
+
+  LoadLambdaFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      Handler: lambda_function.lambda_handler
+      Role: arn:aws:iam::339713081862:role/lambda-execution-role
+      Code:
+        S3Bucket: !Ref LambdaCodeBucket
+        S3Key: load-lambda.zip  # Ensure this key exists in the bucket
+      Runtime: python3.11
+      Timeout: 900
+      MemorySize: 128
       Environment:
         Variables:
           SSM_PARAMETER_NAME: !Ref SSMParameterName
@@ -54,22 +62,55 @@ Resources:
           - sg-05347bb4c6b2f7d31
       LoggingConfig:
         LogFormat: "Text"
-        LogGroup: !Sub "/aws/lambda/${AWS::StackName}-${AWS::Region}-${AWS::StackName}-MyLambdaFunction"
+        LogGroup: !Sub "/aws/lambda/${AWS::StackName}-${AWS::Region}-${AWS::StackName}-LoadLambdaFunction"
 
-  LambdaPermissionForS3:
+  LambdaPermissionForS3ExtractTransform:
     Type: AWS::Lambda::Permission
-    DependsOn: MyLambdaFunction
     Properties:
       Action: lambda:InvokeFunction
-      FunctionName: !Ref MyLambdaFunction
+      FunctionName: !Ref ExtractTransformLambdaFunction
       Principal: s3.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Sub arn:aws:s3:::${S3BucketName}
 
+  LambdaPermissionForSQS:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref LoadLambdaFunction
+      Principal: sqs.amazonaws.com
+      SourceArn: !Ref SQSQueueArn
+
+  S3BucketNotification:
+    Type: AWS::S3::BucketNotification
+    Properties:
+      Bucket: !Ref S3BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:Put
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: csv
+            Function: !GetAtt ExtractTransformLambdaFunction.Arn
+
+  SQSQueueTrigger:
+    Type: AWS::Lambda::EventSourceMapping
+    Properties:
+      BatchSize: 10
+      EventSourceArn: !Ref SQSQueueArn
+      FunctionName: !Ref LoadLambdaFunction
+      Enabled: true
+
 Outputs:
-  LambdaFunctionArn:
-    Description: ARN of the Lambda function
-    Value: !GetAtt MyLambdaFunction.Arn
+  ExtractTransformLambdaFunctionArn:
+    Description: ARN of the Extract-Transform Lambda function
+    Value: !GetAtt ExtractTransformLambdaFunction.Arn
+
+  LoadLambdaFunctionArn:
+    Description: ARN of the Load Lambda function
+    Value: !GetAtt LoadLambdaFunction.Arn
 
   SSMParameterName:
     Description: Name of the SSM parameter containing Redshift settings

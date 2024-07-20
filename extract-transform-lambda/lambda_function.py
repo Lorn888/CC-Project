@@ -4,28 +4,8 @@ import boto3
 import csv
 from datetime import datetime
 from extract_function import extract_csv_from_s3
-from transform_function import write_cleaned_csv
-from load_function import load_to_database
-from connection_db import get_db_connection
 
-def create_tables():
-    try:
-        connection = get_db_connection()
-        cursor = connection.cursor()
-
-        with open('schema_definition.sql', 'r') as file:
-            sql_script = file.read()
-
-        cursor.execute(sql_script)
-        connection.commit()
-
-        print('Tables created successfully in Redshift.')
-    except Exception as e:
-        print(f'Error creating tables: {e}')
-        raise e
-    finally:
-        cursor.close()
-        connection.close()
+sqs = boto3.client('sqs')
 
 def convert_date_format(date_str):
     try:
@@ -72,16 +52,6 @@ def load_csv_to_dict(file):
 def lambda_handler(event, context):
     print('lambda_handler: starting')
 
-    create_tables()
-
-    ssm_param_name = os.environ.get('SSM_PARAMETER_NAME', 'NOT_SET')
-    print(f'SSM_PARAMETER_NAME: {ssm_param_name}')
-    if ssm_param_name == 'NOT_SET':
-        return {
-            'statusCode': 500,
-            'body': json.dumps('SSM_PARAMETER_NAME environment variable not set')
-        }
-
     # Extract bucket and filename from the event
     bucket = event['Records'][0]['s3']['bucket']['name']
     filename = event['Records'][0]['s3']['object']['key']
@@ -95,11 +65,16 @@ def lambda_handler(event, context):
     data = load_csv_to_dict(download_path)
     print('CSV data loaded into dictionary')
     
-    print('Loading cleaned data to database')
-    load_to_database(data)
-    print('Cleaned data loaded to database')
+    # Send the data to SQS
+    sqs_queue_url = os.environ['SQS_QUEUE_URL']
+    for record in data:
+        response = sqs.send_message(
+            QueueUrl=sqs_queue_url,
+            MessageBody=json.dumps(record)
+        )
+        print(f'Message sent to SQS: {response["MessageId"]}')
 
     return {
         'statusCode': 200,
-        'body': json.dumps('Data cleaned and uploaded successfully!')
+        'body': json.dumps('Data transformed and sent to SQS successfully!')
     }
