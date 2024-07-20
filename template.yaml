@@ -81,21 +81,6 @@ Resources:
       Principal: sqs.amazonaws.com
       SourceArn: !Ref SQSQueueArn
 
-  S3BucketNotification:
-    Type: Custom::S3BucketNotification
-    Properties:
-      ServiceToken: !ImportValue S3NotificationFunctionArn  # ARN of a Lambda function to handle S3 bucket notifications
-      Bucket: !Ref S3BucketName
-      NotificationConfiguration:
-        LambdaConfigurations:
-          - Event: s3:ObjectCreated:Put
-            Filter:
-              S3Key:
-                Rules:
-                  - Name: suffix
-                    Value: csv
-            Function: !GetAtt ExtractTransformLambdaFunction.Arn
-
   SQSQueueTrigger:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
