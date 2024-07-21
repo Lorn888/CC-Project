@@ -37,22 +37,22 @@ jobs:
         shell: pwsh
 
       - name: Zip Lambda functions
+        id: zip
         run: |
           $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
           Compress-Archive -Path .\extract-transform-lambda\* -DestinationPath extract-transform-lambda-$timestamp.zip
           Compress-Archive -Path .\load-lambda\* -DestinationPath load-lambda-$timestamp.zip
+          echo "TIMESTAMP=$timestamp" >> $env:GITHUB_ENV
         shell: pwsh
 
       - name: Upload Lambda package to S3
         run: |
-          $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
-          aws s3 cp extract-transform-lambda-$timestamp.zip s3://cc-lambda-function-bucket/
-          aws s3 cp load-lambda-$timestamp.zip s3://cc-lambda-function-bucket/
+          aws s3 cp extract-transform-lambda-${{ env.TIMESTAMP }}.zip s3://cc-lambda-function-bucket/
+          aws s3 cp load-lambda-${{ env.TIMESTAMP }}.zip s3://cc-lambda-function-bucket/
         shell: pwsh
 
       - name: Deploy CloudFormation Stack
         run: |
-          $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
           aws cloudformation deploy `
             --template-file template.yaml `
             --stack-name my-stack `
@@ -60,7 +60,7 @@ jobs:
               S3Bucket=cc-lambda-function-bucket `
               S3BucketName=coffee-cartel-bucket `
               SSMParameterName=coffee_cartel_redshift_settings `
-              ExtractTransformLambdaCodeKey=extract-transform-lambda-$timestamp.zip `
-              LoadLambdaCodeKey=load-lambda-$timestamp.zip `
+              ExtractTransformLambdaCodeKey=extract-transform-lambda-${{ env.TIMESTAMP }}.zip `
+              LoadLambdaCodeKey=load-lambda-${{ env.TIMESTAMP }}.zip `
             --capabilities CAPABILITY_NAMED_IAM
         shell: pwsh
