@@ -63,7 +63,7 @@ jobs:
               S3Bucket=cc-lambda-function-bucket `
               S3BucketName=coffee-cartel-bucket `
               SSMParameterName=coffee_cartel_redshift_settings `
-              BacklogLambdaCodeKey=backlog-lambda-${{ env.TIMESTAMP }}.zip `
+              BackCodeKey=backlog-lambda-${{ env.TIMESTAMP }}.zip `
               ExtractTransformLambdaCodeKey=extract-transform-lambda-${{ env.TIMESTAMP }}.zip `
               LoadLambdaCodeKey=load-lambda-${{ env.TIMESTAMP }}.zip `
             --capabilities CAPABILITY_NAMED_IAM

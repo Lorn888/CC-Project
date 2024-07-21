@@ -87,7 +87,7 @@ Resources:
       Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
         S3Bucket: !Ref LambdaCodeBucket
-        S3Key: !Ref BacklogLambdaCodeKey
+        S3Key: !Ref BackCodeKey
       Runtime: python3.11
       Timeout: 300
       MemorySize: 128
@@ -144,7 +144,7 @@ Outputs:
 
   BacklogLambdaFunctionArn:
     Description: ARN of the Backlog Lambda function
-    Value: !GetAtt BacklogLambdaFunction.Arn
+    Value: !GetAtt BackCodeKey.Arn
 
   SSMParameterName:
     Description: Name of the SSM parameter containing Redshift settings
