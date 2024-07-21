@@ -60,7 +60,7 @@ Resources:
         S3Bucket: !Ref LambdaCodeBucket
         S3Key: !Ref LoadLambdaCodeKey
       Runtime: python3.11
-      Timeout: 900
+      Timeout: 300
       MemorySize: 128
       Environment:
         Variables:
