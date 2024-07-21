@@ -34,6 +34,7 @@ Resources:
   ExtractTransformLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
+      FunctionName: extract-transform-coffee-cartel 
       Handler: lambda_function.lambda_handler
       Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
@@ -52,6 +53,7 @@ Resources:
   LoadLambdaFunction:
     Type: AWS::Lambda::Function
     Properties:
+      FunctionName: load-coffee-cartel  
       Handler: lambda_function.lambda_handler
       Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
@@ -89,7 +91,6 @@ Resources:
       Principal: sqs.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Ref SQSQueueArn
-
 
   SQSQueueTrigger:
     Type: AWS::Lambda::EventSourceMapping
