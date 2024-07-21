@@ -30,11 +30,6 @@ Parameters:
     Default: 'arn:aws:sqs:eu-west-1:339713081862:CC-Q'
     Description: ARN of the existing SQS queue
 
-  DLQArn:
-    Type: String
-    Default: 'arn:aws:sqs:eu-west-1:339713081862:CC-DLQ'
-    Description: ARN of the Dead Letter Queue
-
 Resources:
   ExtractTransformLambdaFunction:
     Type: AWS::Lambda::Function
@@ -79,25 +74,6 @@ Resources:
         LogFormat: "Text"
         LogGroup: !Sub "/aws/lambda/${AWS::StackName}-${AWS::Region}-${AWS::StackName}-LoadLambdaFunction"
 
-  BacklogLambdaFunction:
-    Type: AWS::Lambda::Function
-    Properties:
-      FunctionName: backlog-coffee-cartel
-      Handler: lambda_function.lambda_handler
-      Role: arn:aws:iam::339713081862:role/lambda-execution-role
-      Code:
-        S3Bucket: !Ref LambdaCodeBucket
-        S3Key: !Ref BackCodeKey
-      Runtime: python3.11
-      Timeout: 300
-      MemorySize: 128
-      Environment:
-        Variables:
-          DLQ_URL: !Sub https://sqs.${AWS::Region}.amazonaws.com/${AWS::AccountId}/CC-DLQ
-      LoggingConfig:
-        LogFormat: "Text"
-        LogGroup: !Sub "/aws/lambda/${AWS::StackName}-${AWS::Region}-${AWS::StackName}-BacklogLambdaFunction"
-
   LambdaPermissionForS3ExtractTransform:
     Type: AWS::Lambda::Permission
     Properties:
@@ -116,15 +92,6 @@ Resources:
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Ref SQSQueueArn
 
-  LambdaPermissionForDLQ:
-    Type: AWS::Lambda::Permission
-    Properties:
-      Action: lambda:InvokeFunction
-      FunctionName: !Ref BacklogLambdaFunction
-      Principal: sqs.amazonaws.com
-      SourceAccount: !Ref "AWS::AccountId"
-      SourceArn: !Ref DLQArn
-
   SQSQueueTrigger:
     Type: AWS::Lambda::EventSourceMapping
     Properties:
@@ -141,10 +108,6 @@ Outputs:
   LoadLambdaFunctionArn:
     Description: ARN of the Load Lambda function
     Value: !GetAtt LoadLambdaFunction.Arn
-
-  BacklogLambdaFunctionArn:
-    Description: ARN of the Backlog Lambda function
-    Value: !GetAtt BackCodeKey.Arn
 
   SSMParameterName:
     Description: Name of the SSM parameter containing Redshift settings

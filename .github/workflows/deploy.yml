@@ -42,7 +42,6 @@ jobs:
           $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
           Compress-Archive -Path .\extract-transform-lambda\* -DestinationPath extract-transform-lambda-$timestamp.zip
           Compress-Archive -Path .\load-lambda\* -DestinationPath load-lambda-$timestamp.zip
-          Compress-Archive -Path .\backlog-lambda\* -DestinationPath backlog-lambda-$timestamp.zip
           echo "TIMESTAMP=$timestamp" >> $env:GITHUB_ENV
         shell: pwsh
 
@@ -50,9 +49,7 @@ jobs:
         run: |
           aws s3 cp extract-transform-lambda-${{ env.TIMESTAMP }}.zip s3://cc-lambda-function-bucket/
           aws s3 cp load-lambda-${{ env.TIMESTAMP }}.zip s3://cc-lambda-function-bucket/
-          aws s3 cp backlog-lambda-${{ env.TIMESTAMP }}.zip s3://cc-lambda-function-bucket/
         shell: pwsh
-
 
       - name: Deploy CloudFormation Stack
         run: |
@@ -63,16 +60,7 @@ jobs:
               S3Bucket=cc-lambda-function-bucket `
               S3BucketName=coffee-cartel-bucket `
               SSMParameterName=coffee_cartel_redshift_settings `
-              BackCodeKey=backlog-lambda-${{ env.TIMESTAMP }}.zip `
               ExtractTransformLambdaCodeKey=extract-transform-lambda-${{ env.TIMESTAMP }}.zip `
               LoadLambdaCodeKey=load-lambda-${{ env.TIMESTAMP }}.zip `
             --capabilities CAPABILITY_NAMED_IAM
-        shell: pwsh
-
-      - name: Invoke Backlog Lambda Function
-        run: |
-          aws lambda invoke `
-            --function-name backlog-coffee-cartel `
-            --payload '{}' `
-            output.json
         shell: pwsh
