@@ -87,7 +87,7 @@ Resources:
       Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
         S3Bucket: !Ref LambdaCodeBucket
-        S3Key: backlog-lambda.zip
+        S3Key: !Ref BacklogLambdaCodeKey
       Runtime: python3.11
       Timeout: 300
       MemorySize: 128
