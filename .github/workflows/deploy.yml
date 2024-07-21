@@ -53,6 +53,7 @@ jobs:
           aws s3 cp backlog-lambda-${{ env.TIMESTAMP }}.zip s3://cc-lambda-function-bucket/
         shell: pwsh
 
+
       - name: Deploy CloudFormation Stack
         run: |
           aws cloudformation deploy `
