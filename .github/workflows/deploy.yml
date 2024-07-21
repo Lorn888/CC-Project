@@ -68,11 +68,3 @@ jobs:
               BacklogLambdaCodeKey=backlog-lambda-${{ env.TIMESTAMP }}.zip `
             --capabilities CAPABILITY_NAMED_IAM
         shell: pwsh
-
-      - name: Invoke Backlog Lambda Function
-        run: |
-          aws lambda invoke `
-            --function-name backlog-coffee-cartel `
-            --payload '{}' `
-            output.json
-        shell: pwsh
