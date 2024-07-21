@@ -14,8 +14,16 @@ Parameters:
 
   LambdaCodeBucket:
     Type: String
-    Default: 'cc-lambda-function-bucket'  # Bucket created by GitHub Actions
+    Default: 'cc-lambda-function-bucket'
     Description: Name of the S3 bucket that contains the Lambda code
+
+  ExtractTransformLambdaCodeKey:
+    Type: String
+    Description: S3 key for the Extract Transform Lambda code
+
+  LoadLambdaCodeKey:
+    Type: String
+    Description: S3 key for the Load Lambda code
 
   SQSQueueArn:
     Type: String
@@ -30,7 +38,7 @@ Resources:
       Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
         S3Bucket: !Ref LambdaCodeBucket
-        S3Key: extract-transform-lambda.zip  # Ensure this key exists in the bucket
+        S3Key: !Ref ExtractTransformLambdaCodeKey
       Runtime: python3.11
       Timeout: 900
       MemorySize: 128
@@ -48,7 +56,7 @@ Resources:
       Role: arn:aws:iam::339713081862:role/lambda-execution-role
       Code:
         S3Bucket: !Ref LambdaCodeBucket
-        S3Key: load-lambda.zip  # Ensure this key exists in the bucket
+        S3Key: !Ref LoadLambdaCodeKey
       Runtime: python3.11
       Timeout: 900
       MemorySize: 128
@@ -81,6 +89,20 @@ Resources:
       Principal: sqs.amazonaws.com
       SourceAccount: !Ref "AWS::AccountId"
       SourceArn: !Ref SQSQueueArn
+
+  S3BucketNotification:
+    Type: AWS::S3::BucketNotification
+    Properties:
+      Bucket: !Ref S3BucketName
+      NotificationConfiguration:
+        LambdaConfigurations:
+          - Event: s3:ObjectCreated:Put
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: suffix
+                    Value: zip
+            Function: !GetAtt ExtractTransformLambdaFunction.Arn
 
   SQSQueueTrigger:
     Type: AWS::Lambda::EventSourceMapping

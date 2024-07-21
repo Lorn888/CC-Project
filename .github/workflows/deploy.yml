@@ -20,7 +20,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: ${{secrets.AWS_ROLE_ARN}} 
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }} 
           aws-region: eu-west-1
 
       - name: Verify AWS Credentials
@@ -36,20 +36,23 @@ jobs:
           }
         shell: pwsh
 
-      - name: Zip Lambda function using PowerShell
+      - name: Zip Lambda functions
         run: |
-          Compress-Archive -Path .\extract-transform-lambda\* -DestinationPath extract-transform-lambda.zip
-          Compress-Archive -Path .\load-lambda\* -DestinationPath load-lambda.zip
+          $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
+          Compress-Archive -Path .\extract-transform-lambda\* -DestinationPath extract-transform-lambda-$timestamp.zip
+          Compress-Archive -Path .\load-lambda\* -DestinationPath load-lambda-$timestamp.zip
         shell: pwsh
 
       - name: Upload Lambda package to S3
         run: |
-          aws s3 cp extract-transform-lambda.zip s3://cc-lambda-function-bucket/
-          aws s3 cp load-lambda.zip s3://cc-lambda-function-bucket/
+          $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
+          aws s3 cp extract-transform-lambda-$timestamp.zip s3://cc-lambda-function-bucket/
+          aws s3 cp load-lambda-$timestamp.zip s3://cc-lambda-function-bucket/
         shell: pwsh
 
       - name: Deploy CloudFormation Stack
         run: |
+          $timestamp = (Get-Date).ToString("yyyyMMddHHmmss")
           aws cloudformation deploy `
             --template-file template.yaml `
             --stack-name my-stack `
@@ -57,5 +60,7 @@ jobs:
               S3Bucket=cc-lambda-function-bucket `
               S3BucketName=coffee-cartel-bucket `
               SSMParameterName=coffee_cartel_redshift_settings `
+              ExtractTransformLambdaCodeKey=extract-transform-lambda-$timestamp.zip `
+              LoadLambdaCodeKey=load-lambda-$timestamp.zip `
             --capabilities CAPABILITY_NAMED_IAM
         shell: pwsh
