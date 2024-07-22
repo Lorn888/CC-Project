@@ -5,27 +5,11 @@ def load_to_database(cleaned_data):
     # Ensure cleaned_data is a list of records
     if isinstance(cleaned_data, dict):
         cleaned_data = [cleaned_data]
-
+    
     connection = get_db_connection()
     cursor = connection.cursor()
     try:
         for row in cleaned_data:
-            # Check if a transaction with the same details already exists
-            cursor.execute("""
-                SELECT transaction_details_id FROM transactions_details
-                WHERE timestamp = %s AND location = %s AND total_amount = %s AND payment_method = %s
-            """, (
-                row['Time Stamp'],
-                row['Location'],
-                row['Total Amount'],
-                row['Payment Method']
-            ))
-            existing_transaction = cursor.fetchone()
-
-            if existing_transaction:
-                print(f"Duplicate transaction found: {row}. Skipping.")
-                continue
-
             # Insert into transactions_details table
             cursor.execute("""
                 INSERT INTO transactions_details (timestamp, location, total_amount, payment_method)
