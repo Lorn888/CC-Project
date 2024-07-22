@@ -10,15 +10,20 @@ def load_to_database(cleaned_data):
     cursor = connection.cursor()
     try:
         for row in cleaned_data:
-            # Check if a transaction with the same timestamp and location already exists
+            # Check if a transaction with the same details already exists
             cursor.execute("""
                 SELECT transaction_details_id FROM transactions_details
-                WHERE timestamp = %s AND location = %s
-            """, (row['Time Stamp'], row['Location']))
+                WHERE timestamp = %s AND location = %s AND total_amount = %s AND payment_method = %s
+            """, (
+                row['Time Stamp'],
+                row['Location'],
+                row['Total Amount'],
+                row['Payment Method']
+            ))
             existing_transaction = cursor.fetchone()
 
             if existing_transaction:
-                print(f"Duplicate transaction found for timestamp {row['Time Stamp']} and location {row['Location']}. Skipping.")
+                print(f"Duplicate transaction found: {row}. Skipping.")
                 continue
 
             # Insert into transactions_details table
