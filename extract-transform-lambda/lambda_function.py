@@ -65,14 +65,13 @@ def lambda_handler(event, context):
     data = load_csv_to_dict(download_path)
     print('CSV data loaded into dictionary')
     
-    # Send the data to SQS
+    # Send the entire data list as a single message to SQS
     sqs_queue_url = os.environ['SQS_QUEUE_URL']
-    for record in data:
-        response = sqs.send_message(
-            QueueUrl=sqs_queue_url,
-            MessageBody=json.dumps(record)
-        )
-        print(f'Message sent to SQS: {response["MessageId"]}')
+    response = sqs.send_message(
+        QueueUrl=sqs_queue_url,
+        MessageBody=json.dumps(data)
+    )
+    print(f'Message sent to SQS: {response["MessageId"]}')
 
     return {
         'statusCode': 200,
