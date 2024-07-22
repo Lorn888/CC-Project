@@ -10,7 +10,7 @@ def lambda_handler(event, context):
         
         try:
             # Load the data into the database
-            load_to_database([message])
+            load_to_database(message)
             print('Message loaded to database successfully')
         except Exception as e:
             print(f'Error loading message to database: {e}')
